@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.startsWith;
 
 import java.io.File;
 import org.apache.commons.io.FileUtils;
-import org.hamcrest.Matchers;
+import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -45,6 +45,23 @@ public class DockerComposeSimpleShould {
         String contents = FileUtils.readFileToString(expectedFile);
 
         assertThat(contents, startsWith("version: \"2\""));
+    }
+
+    @Test
+    public void generated_file_contains_container_definitions() throws Exception {
+        DockerComposeSimple dockerCompose = DockerComposeSimple.of(
+                containerNamed("db", SIMPLE_DB)
+        );
+
+        File tempFolder = temporaryFolder.newFolder();
+        dockerCompose.before(() -> tempFolder);
+
+        File expectedFile = getDockerComposeFile(tempFolder);
+        String contents = FileUtils.readFileToString(expectedFile);
+
+        String actualDockerCompose = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("one-simple-db-container.yaml"));
+
+        assertThat(contents, is(actualDockerCompose));
     }
 
     private static File getDockerComposeFile(File folder) {

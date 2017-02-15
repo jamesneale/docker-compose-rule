@@ -1,0 +1,4 @@
+version: "2"
+containers:
+  db:
+    image: "test/simple-db"

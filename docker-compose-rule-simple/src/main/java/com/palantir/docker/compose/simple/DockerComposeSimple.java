@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 import org.apache.commons.io.FileUtils;
 
 public class DockerComposeSimple {
+    private static final String DOCKER_COMPOSE_HEADER = "version: \"2\"";
+
     private final DockerComposeDefinition definition;
 
     public DockerComposeSimple(DockerComposeDefinition definition) {
@@ -22,16 +24,17 @@ public class DockerComposeSimple {
 
         try {
             File dockerComposeFile = temporaryFolder.toPath().resolve("docker-compose.yaml").toFile();
-
             if (!dockerComposeFile.createNewFile()) {
                 throw new IOException("Unable to create docker-compose file!");
             }
-
-            FileUtils.write(dockerComposeFile, "version: \"2\"");
-
+            FileUtils.write(dockerComposeFile, dockerComposeFileContents());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    private String dockerComposeFileContents() {
+        return String.join("\n", DOCKER_COMPOSE_HEADER, definition.toString());
     }
 
     public static DockerComposeSimple of(NamedContainer... containers) {

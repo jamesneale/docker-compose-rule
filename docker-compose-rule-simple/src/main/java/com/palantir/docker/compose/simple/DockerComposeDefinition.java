@@ -19,4 +19,13 @@ public abstract class DockerComposeDefinition {
         return ImmutableDockerComposeDefinition.builder();
     }
 
+    @Override
+    public String toString() {
+        try {
+            return MapperProvider.mapper().writeValueAsString(this);
+        } catch (Exception e) {
+            return "Unable to generate string for object.";
+        }
+    }
+
 }
