@@ -10,24 +10,18 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 import org.apache.commons.io.FileUtils;
 
-public class DockerComposeGenerator {
-    private static final String DOCKER_COMPOSE_HEADER = "version: \"2\"";
+public class DockerComposeFileGenerator {
+    private static final String DOCKER_COMPOSE_HEADER = "version: \"3\"";
 
     private final DockerComposeDefinition definition;
 
-    public DockerComposeGenerator(DockerComposeDefinition definition) {
+    public DockerComposeFileGenerator(DockerComposeDefinition definition) {
         this.definition = definition;
     }
 
-    public void before(Supplier<File> temporaryFolderSupplier) {
-        File temporaryFolder = temporaryFolderSupplier.get();
-
+    public void writeFile(Supplier<File> outputFile) {
         try {
-            File dockerComposeFile = temporaryFolder.toPath().resolve("docker-compose.yaml").toFile();
-            if (!dockerComposeFile.createNewFile()) {
-                throw new IOException("Unable to create docker-compose file!");
-            }
-            FileUtils.write(dockerComposeFile, dockerComposeFileContents());
+            FileUtils.write(outputFile.get(), dockerComposeFileContents());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -37,10 +31,10 @@ public class DockerComposeGenerator {
         return String.join("\n", DOCKER_COMPOSE_HEADER, definition.toString());
     }
 
-    public static DockerComposeGenerator of(NamedContainer... containers) {
+    public static DockerComposeFileGenerator of(NamedContainer... containers) {
         ImmutableDockerComposeDefinition.Builder builder = DockerComposeDefinition.builder();
-        Arrays.stream(containers).forEach(container -> builder.putContainers(container.name, container.definition));
-        return new DockerComposeGenerator(builder.build());
+        Arrays.stream(containers).forEach(container -> builder.putServices(container.name, container.definition));
+        return new DockerComposeFileGenerator(builder.build());
     }
 
     public static class NamedContainer {

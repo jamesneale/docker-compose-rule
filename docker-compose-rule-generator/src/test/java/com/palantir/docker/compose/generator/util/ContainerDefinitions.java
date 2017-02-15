@@ -15,4 +15,8 @@ public class ContainerDefinitions {
             .image("test/simple-db")
             .build();
 
+    public static final DockerContainerDefinition ALPINE_POSTGRES = DockerContainerDefinition.builder()
+            .image("kiasaki/alpine-postgres")
+            .build();
+
 }

@@ -13,7 +13,7 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ImmutableDockerComposeDefinition.class)
 public abstract class DockerComposeDefinition {
 
-    protected abstract Map<String, DockerContainerDefinition> containers();
+    protected abstract Map<String, DockerContainerDefinition> services();
 
     public static ImmutableDockerComposeDefinition.Builder builder() {
         return ImmutableDockerComposeDefinition.builder();

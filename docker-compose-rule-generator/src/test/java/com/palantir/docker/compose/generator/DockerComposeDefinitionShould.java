@@ -14,10 +14,10 @@ public class DockerComposeDefinitionShould {
     @Test
     public void properly_assign_names_to_the_containers() throws Exception {
         DockerComposeDefinition dockerComposeDefinition = DockerComposeDefinition.builder()
-                .putContainers("db", SIMPLE_DB)
+                .putServices("db", SIMPLE_DB)
                 .build();
 
-        String expected = "containers:\n"
+        String expected = "services:\n"
                         + "  db:\n"
                         + "    image: \"test/simple-db\"";
 
