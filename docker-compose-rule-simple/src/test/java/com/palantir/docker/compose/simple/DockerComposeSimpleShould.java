@@ -5,7 +5,9 @@ package com.palantir.docker.compose.simple;
 
 import static com.palantir.docker.compose.simple.DockerComposeSimple.NamedContainer.containerNamed;
 import static com.palantir.docker.compose.simple.util.ContainerDefinitions.SIMPLE_DB;
+import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 
@@ -42,7 +44,7 @@ public class DockerComposeSimpleShould {
         dockerCompose.before(() -> tempFolder);
 
         File expectedFile = getDockerComposeFile(tempFolder);
-        String contents = FileUtils.readFileToString(expectedFile);
+        String contents = readFileToString(expectedFile);
 
         assertThat(contents, startsWith("version: \"2\""));
     }
@@ -57,11 +59,36 @@ public class DockerComposeSimpleShould {
         dockerCompose.before(() -> tempFolder);
 
         File expectedFile = getDockerComposeFile(tempFolder);
-        String contents = FileUtils.readFileToString(expectedFile);
+        String contents = readFileToString(expectedFile);
 
-        String actualDockerCompose = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("one-simple-db-container.yaml"));
+        String expected = "containers:\n"
+                        + "  db:\n"
+                        + "    image: \"test/simple-db\"";
 
-        assertThat(contents, is(actualDockerCompose));
+        assertThat(contents, containsString(expected));
+    }
+
+    @Test
+    public void generated_file_works_for_multiple_containers() throws Exception {
+        DockerComposeSimple dockerCompose = DockerComposeSimple.of(
+                containerNamed("db1", SIMPLE_DB),
+                containerNamed("db2", SIMPLE_DB)
+        );
+
+        File tempFolder = temporaryFolder.newFolder();
+        dockerCompose.before(() -> tempFolder);
+
+        File expectedFile = getDockerComposeFile(tempFolder);
+        String contents = readFileToString(expectedFile);
+
+        String expectedContents =
+                "containers:\n"
+                        + "  db1:\n"
+                        + "    image: \"test/simple-db\"\n"
+                        + "  db2:\n"
+                        + "    image: \"test/simple-db\"\n";
+
+        assertThat(contents, containsString(expectedContents));
     }
 
     private static File getDockerComposeFile(File folder) {
