@@ -7,8 +7,11 @@ import static com.palantir.docker.compose.simple.DockerComposeSimple.NamedContai
 import static com.palantir.docker.compose.simple.util.ContainerDefinitions.SIMPLE_DB;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 
 import java.io.File;
+import org.apache.commons.io.FileUtils;
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -23,11 +26,25 @@ public class DockerComposeSimpleShould {
         DockerComposeSimple dockerComposeSimple = DockerComposeSimple.of(containerNamed("db", SIMPLE_DB));
 
         File tempFolder = temporaryFolder.newFolder();
-
         dockerComposeSimple.before(() -> tempFolder);
 
         File expectedFile = tempFolder.toPath().resolve("docker-compose.yaml").toFile();
         assertThat(expectedFile.exists(), is(true));
     }
-    
+
+    @Test
+    public void generated_file_starts_with_version_two() throws Exception {
+        DockerComposeSimple dockerCompose = DockerComposeSimple.of(
+                containerNamed("db", SIMPLE_DB)
+        );
+
+        File tempFolder = temporaryFolder.newFolder();
+        dockerCompose.before(() -> tempFolder);
+
+        File expectedFile = tempFolder.toPath().resolve("docker-compose.yaml").toFile();
+        String contents = FileUtils.readFileToString(expectedFile);
+
+        assertThat(contents, startsWith("version: \"2\""));
+    }
+
 }

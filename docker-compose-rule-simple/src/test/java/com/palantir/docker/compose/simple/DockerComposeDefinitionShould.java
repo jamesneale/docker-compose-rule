@@ -4,6 +4,7 @@
 package com.palantir.docker.compose.simple;
 
 import static com.palantir.docker.compose.simple.MapperProvider.mapper;
+import static com.palantir.docker.compose.simple.util.ContainerDefinitions.SIMPLE_DB;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
@@ -13,19 +14,15 @@ public class DockerComposeDefinitionShould {
 
     @Test
     public void properly_assign_names_to_the_containers() throws Exception {
-        DockerContainerDefinition alpinePostgres = DockerContainerDefinition.builder()
-                .image("test/alpine-postgres")
-                .build();
-
         DockerComposeDefinition dockerComposeDefinition = DockerComposeDefinition.builder()
-                .putContainers("db", alpinePostgres)
+                .putContainers("db", SIMPLE_DB)
                 .build();
 
         String dockerComposeString = mapper().writeValueAsString(dockerComposeDefinition);
 
         String expected = "containers:\n"
                         + "  db:\n"
-                        + "    image: \"test/alpine-postgres\"";
+                        + "    image: \"test/simple-db\"";
 
         assertThat(dockerComposeString, containsString(expected));
     }

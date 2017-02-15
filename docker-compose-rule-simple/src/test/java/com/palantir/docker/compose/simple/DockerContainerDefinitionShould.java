@@ -4,6 +4,7 @@
 package com.palantir.docker.compose.simple;
 
 import static com.palantir.docker.compose.simple.MapperProvider.mapper;
+import static com.palantir.docker.compose.simple.util.ContainerDefinitions.SIMPLE_DB;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -13,12 +14,7 @@ public class DockerContainerDefinitionShould {
 
     @Test
     public void serialize_as_image_name_only() throws Exception {
-        DockerContainerDefinition definition = DockerContainerDefinition.builder()
-                .image("kiasaki/alpine-postgres")
-                .build();
-
-        String composeFileString = mapper().writeValueAsString(definition);
-
-        assertThat(composeFileString, is("image: \"kiasaki/alpine-postgres\"\n"));
+        String composeFileString = mapper().writeValueAsString(SIMPLE_DB);
+        assertThat(composeFileString, is("image: \"test/simple-db\"\n"));
     }
 }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.function.Supplier;
+import org.apache.commons.io.FileUtils;
 
 public class DockerComposeSimple {
     private final DockerComposeDefinition definition;
@@ -20,9 +21,14 @@ public class DockerComposeSimple {
         File temporaryFolder = temporaryFolderSupplier.get();
 
         try {
-            if (!temporaryFolder.toPath().resolve("docker-compose.yaml").toFile().createNewFile()) {
+            File dockerComposeFile = temporaryFolder.toPath().resolve("docker-compose.yaml").toFile();
+
+            if (!dockerComposeFile.createNewFile()) {
                 throw new IOException("Unable to create docker-compose file!");
             }
+
+            FileUtils.write(dockerComposeFile, "version: \"2\"");
+
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
