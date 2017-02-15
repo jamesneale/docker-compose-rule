@@ -28,7 +28,7 @@ public class DockerComposeSimpleShould {
         File tempFolder = temporaryFolder.newFolder();
         dockerComposeSimple.before(() -> tempFolder);
 
-        File expectedFile = tempFolder.toPath().resolve("docker-compose.yaml").toFile();
+        File expectedFile = getDockerComposeFile(tempFolder);
         assertThat(expectedFile.exists(), is(true));
     }
 
@@ -41,10 +41,14 @@ public class DockerComposeSimpleShould {
         File tempFolder = temporaryFolder.newFolder();
         dockerCompose.before(() -> tempFolder);
 
-        File expectedFile = tempFolder.toPath().resolve("docker-compose.yaml").toFile();
+        File expectedFile = getDockerComposeFile(tempFolder);
         String contents = FileUtils.readFileToString(expectedFile);
 
         assertThat(contents, startsWith("version: \"2\""));
+    }
+
+    private static File getDockerComposeFile(File folder) {
+        return folder.toPath().resolve("docker-compose.yaml").toFile();
     }
 
 }
