@@ -1,10 +1,10 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  */
-package com.palantir.docker.compose.simple;
+package com.palantir.docker.compose.automatic;
 
-import static com.palantir.docker.compose.simple.DockerComposeSimple.NamedContainer.containerNamed;
-import static com.palantir.docker.compose.simple.util.ContainerDefinitions.SIMPLE_DB;
+import static com.palantir.docker.compose.automatic.DockerComposeAutomatic.NamedContainer.containerNamed;
+import static com.palantir.docker.compose.automatic.util.ContainerDefinitions.SIMPLE_DB;
 import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -23,7 +23,7 @@ public class DockerComposeSimpleShould {
 
     @Test
     public void generate_a_file_for_a_single_container() throws Exception {
-        DockerComposeSimple dockerComposeSimple = DockerComposeSimple.of(containerNamed("db", SIMPLE_DB));
+        DockerComposeAutomatic dockerComposeSimple = DockerComposeAutomatic.of(containerNamed("db", SIMPLE_DB));
 
         File tempFolder = temporaryFolder.newFolder();
         dockerComposeSimple.before(() -> tempFolder);
@@ -34,7 +34,7 @@ public class DockerComposeSimpleShould {
 
     @Test
     public void generated_file_starts_with_version_two() throws Exception {
-        DockerComposeSimple dockerCompose = DockerComposeSimple.of(
+        DockerComposeAutomatic dockerCompose = DockerComposeAutomatic.of(
                 containerNamed("db", SIMPLE_DB)
         );
 
@@ -49,7 +49,7 @@ public class DockerComposeSimpleShould {
 
     @Test
     public void generated_file_contains_container_definitions() throws Exception {
-        DockerComposeSimple dockerCompose = DockerComposeSimple.of(
+        DockerComposeAutomatic dockerCompose = DockerComposeAutomatic.of(
                 containerNamed("db", SIMPLE_DB)
         );
 
@@ -68,7 +68,7 @@ public class DockerComposeSimpleShould {
 
     @Test
     public void generated_file_works_for_multiple_containers() throws Exception {
-        DockerComposeSimple dockerCompose = DockerComposeSimple.of(
+        DockerComposeAutomatic dockerCompose = DockerComposeAutomatic.of(
                 containerNamed("db1", SIMPLE_DB),
                 containerNamed("db2", SIMPLE_DB)
         );

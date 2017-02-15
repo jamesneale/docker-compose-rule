@@ -2,4 +2,4 @@ rootProject.name='docker-compose-rule'
 
 include 'docker-compose-rule-core'
 include 'docker-compose-rule-junit4'
-include 'docker-compose-rule-simple'
+include 'docker-compose-rule-automatic'

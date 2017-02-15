@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  */
-package com.palantir.docker.compose.simple;
+package com.palantir.docker.compose.automatic;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +10,12 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 import org.apache.commons.io.FileUtils;
 
-public class DockerComposeSimple {
+public class DockerComposeAutomatic {
     private static final String DOCKER_COMPOSE_HEADER = "version: \"2\"";
 
     private final DockerComposeDefinition definition;
 
-    public DockerComposeSimple(DockerComposeDefinition definition) {
+    public DockerComposeAutomatic(DockerComposeDefinition definition) {
         this.definition = definition;
     }
 
@@ -37,10 +37,10 @@ public class DockerComposeSimple {
         return String.join("\n", DOCKER_COMPOSE_HEADER, definition.toString());
     }
 
-    public static DockerComposeSimple of(NamedContainer... containers) {
+    public static DockerComposeAutomatic of(NamedContainer... containers) {
         ImmutableDockerComposeDefinition.Builder builder = DockerComposeDefinition.builder();
         Arrays.stream(containers).forEach(container -> builder.putContainers(container.name, container.definition));
-        return new DockerComposeSimple(builder.build());
+        return new DockerComposeAutomatic(builder.build());
     }
 
     public static class NamedContainer {

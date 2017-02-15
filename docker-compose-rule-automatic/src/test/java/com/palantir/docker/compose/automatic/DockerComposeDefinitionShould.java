@@ -1,10 +1,10 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  */
-package com.palantir.docker.compose.simple;
+package com.palantir.docker.compose.automatic;
 
-import static com.palantir.docker.compose.simple.MapperProvider.mapper;
-import static com.palantir.docker.compose.simple.util.ContainerDefinitions.SIMPLE_DB;
+import static com.palantir.docker.compose.automatic.MapperProvider.mapper;
+import static com.palantir.docker.compose.automatic.util.ContainerDefinitions.SIMPLE_DB;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
