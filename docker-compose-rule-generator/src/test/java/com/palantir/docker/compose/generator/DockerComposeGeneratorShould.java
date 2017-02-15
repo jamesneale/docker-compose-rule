@@ -1,10 +1,10 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  */
-package com.palantir.docker.compose.automatic;
+package com.palantir.docker.compose.generator;
 
-import static com.palantir.docker.compose.automatic.DockerComposeAutomatic.NamedContainer.containerNamed;
-import static com.palantir.docker.compose.automatic.util.ContainerDefinitions.SIMPLE_DB;
+import static com.palantir.docker.compose.generator.DockerComposeGenerator.NamedContainer.containerNamed;
+import static com.palantir.docker.compose.generator.util.ContainerDefinitions.SIMPLE_DB;
 import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -16,14 +16,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public class DockerComposeSimpleShould {
+public class DockerComposeGeneratorShould {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void generate_a_file_for_a_single_container() throws Exception {
-        DockerComposeAutomatic dockerComposeSimple = DockerComposeAutomatic.of(containerNamed("db", SIMPLE_DB));
+        DockerComposeGenerator dockerComposeSimple = DockerComposeGenerator.of(containerNamed("db", SIMPLE_DB));
 
         File tempFolder = temporaryFolder.newFolder();
         dockerComposeSimple.before(() -> tempFolder);
@@ -34,7 +34,7 @@ public class DockerComposeSimpleShould {
 
     @Test
     public void generated_file_starts_with_version_two() throws Exception {
-        DockerComposeAutomatic dockerCompose = DockerComposeAutomatic.of(
+        DockerComposeGenerator dockerCompose = DockerComposeGenerator.of(
                 containerNamed("db", SIMPLE_DB)
         );
 
@@ -49,7 +49,7 @@ public class DockerComposeSimpleShould {
 
     @Test
     public void generated_file_contains_container_definitions() throws Exception {
-        DockerComposeAutomatic dockerCompose = DockerComposeAutomatic.of(
+        DockerComposeGenerator dockerCompose = DockerComposeGenerator.of(
                 containerNamed("db", SIMPLE_DB)
         );
 
@@ -68,7 +68,7 @@ public class DockerComposeSimpleShould {
 
     @Test
     public void generated_file_works_for_multiple_containers() throws Exception {
-        DockerComposeAutomatic dockerCompose = DockerComposeAutomatic.of(
+        DockerComposeGenerator dockerCompose = DockerComposeGenerator.of(
                 containerNamed("db1", SIMPLE_DB),
                 containerNamed("db2", SIMPLE_DB)
         );

@@ -1,9 +1,9 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  */
-package com.palantir.docker.compose.automatic.util;
+package com.palantir.docker.compose.generator.util;
 
-import com.palantir.docker.compose.automatic.DockerContainerDefinition;
+import com.palantir.docker.compose.generator.DockerContainerDefinition;
 
 public class ContainerDefinitions {
 

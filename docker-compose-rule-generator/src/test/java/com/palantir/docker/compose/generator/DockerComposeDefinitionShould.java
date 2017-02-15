@@ -1,10 +1,9 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  */
-package com.palantir.docker.compose.automatic;
+package com.palantir.docker.compose.generator;
 
-import static com.palantir.docker.compose.automatic.MapperProvider.mapper;
-import static com.palantir.docker.compose.automatic.util.ContainerDefinitions.SIMPLE_DB;
+import static com.palantir.docker.compose.generator.util.ContainerDefinitions.SIMPLE_DB;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
@@ -18,12 +17,10 @@ public class DockerComposeDefinitionShould {
                 .putContainers("db", SIMPLE_DB)
                 .build();
 
-        String dockerComposeString = mapper().writeValueAsString(dockerComposeDefinition);
-
         String expected = "containers:\n"
                         + "  db:\n"
                         + "    image: \"test/simple-db\"";
 
-        assertThat(dockerComposeString, containsString(expected));
+        assertThat(dockerComposeDefinition.toString(), containsString(expected));
     }
 }
