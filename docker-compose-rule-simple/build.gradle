@@ -1,7 +1,9 @@
 dependencies {
     compile project(':docker-compose-rule-core')
 
-    testCompile "junit:junit:$junitVersion"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
 
     processor 'org.immutables:value:2.1.14'
 
@@ -9,6 +11,7 @@ dependencies {
     testCompile "org.apache.logging.log4j:log4j-core:$log4jVersion"
     testCompile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
 
+    testCompile "junit:junit:$junitVersion"
     testCompile "org.hamcrest:hamcrest-all:$hamcrestVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "com.github.tomakehurst:wiremock:2.0.6-beta"
